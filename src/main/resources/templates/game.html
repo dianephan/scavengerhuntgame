@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Final Stage</title>
+    <style>
+
+        @keyframes flicker {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(100px);}
+            0% {
+                opacity: 0;
+                transform: translateX(2000px);
+            }
+            60% {
+                opacity: 1;
+                transform: translateX(-30px);
+            }
+            80% {
+                transform: translateX(10px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        #banana {
+            width: 200px;
+            height: 100px;
+            position: center;
+            /*top: 20%;*/
+            /*left: 20%;*/
+            animation: bounce 2s ease alternate infinite;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click on Rilakkuma quickly!</h1>
+    <br><img id = "banana" src="/banana.gif" alt="lil bananyeah">
+
+    <script>
+        var banana = document.getElementById("banana");
+        banana.onclick = function(e) {
+            alert("sending text");
+            fetch("/sendSMS", {method:"POST"})
+                .then(response => response.text())
+                .then(data => console.log(data));
+        }
+    </script>
+</body>
+</html>
