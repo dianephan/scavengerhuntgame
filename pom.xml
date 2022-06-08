@@ -41,6 +41,11 @@
 			<artifactId>java8-ngrok</artifactId>
 			<version>1.4.5</version>
 		</dependency>
+<!--		added this to get rid of an error -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
 	</dependencies>
 
