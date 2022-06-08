@@ -2,12 +2,9 @@ package com.example.scavengerhunt;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.messaging.Body;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -19,29 +16,27 @@ public class GameRestController {
     @PostMapping(value = "/sendSMS")
     public ResponseEntity<String> sendSMS() {
         Twilio.init(System.getenv("TWILIO_ACCOUNT_SID"), System.getenv("TWILIO_AUTH_TOKEN"));
-
+        String TWILIO_PHONE = System.getenv("TWILIO_PHONE");
+        String YOUR_PHONE_NUMBER = System.getenv("YOUR_PHONE_NUMBER");
         Message.creator(
-                new com.twilio.type.PhoneNumber("+to"),    // to
-                new com.twilio.type.PhoneNumber("+fro"),    // from
+                new com.twilio.type.PhoneNumber(YOUR_PHONE_NUMBER),
+                new com.twilio.type.PhoneNumber(TWILIO_PHONE),
                 "We have a winner!").create();
-
         return new ResponseEntity<String>("Message sent successfully", HttpStatus.OK);
     }
 
-//    @PostMapping(value="/sms", produces="application/xml")
+    @PostMapping(value="/sms", produces = "application/xml")
 //    public String sendTwiML(@RequestParam("Body") String msg) {
-//        String responseMsg = "https://XXXXXXXXX.ngrok.io/game";    // replace with your link here
-//        Body body = new Body
-//                .Builder(responseMsg)
-//                .build();
-//        Message sms = new Message
-//                .Builder()
-//                .body(body)
-//                .build();
-//        MessagingResponse twiml = new MessagingResponse
-//                .Builder()
-//                .message(sms)
-//                .build();
-//        return twiml.toXml();
-//    }
+    public ResponseEntity<String> sendTwiML(@RequestParam("Body") String msg, @RequestParam(value = "From", required = false) String incomingCallerNumber) {
+        Twilio.init(System.getenv("TWILIO_ACCOUNT_SID"), System.getenv("TWILIO_AUTH_TOKEN"));
+        String TWILIO_PHONE = System.getenv("TWILIO_PHONE");
+        String responseMsg = "https://XXXXXXXX.ngrok.io/game";
+        String RECIPIENT_NUM = incomingCallerNumber;
+        Message message = Message.creator(
+                        new com.twilio.type.PhoneNumber(RECIPIENT_NUM),
+                        new com.twilio.type.PhoneNumber(TWILIO_PHONE),
+                        responseMsg)
+                .create();
+        return new ResponseEntity<String>("Message sent successfully", HttpStatus.OK);
+    }
 }
