@@ -49,7 +49,7 @@
     <script>
         var banana = document.getElementById("banana");
         banana.onclick = function(e) {
-            alert("sending text");
+            alert("Informing the host that you are the winner!");
             fetch("/sendSMS", {method:"POST"})
                 .then(response => response.text())
                 .then(data => console.log(data));
